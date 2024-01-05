@@ -1,38 +1,279 @@
-.App {
-  text-align: center;
+.body {
+  margin: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.mainContainer {
+  background-color: black;
+  color: white !important;
+  height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.white {
+  color: black;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.inputDiv {
+  border-bottom: solid 1px black !important;
+  width: 30%;
+}
+
+.checkBox input {
+  height: 25px;
+  width: 60px !important;
+  cursor: pointer;
+}
+
+.searchBox:focus {
+  box-shadow: none !important;
+}
+
+.searchBox {
+  width: 100%;
+}
+
+.introImage {
+  width: 27%;
+}
+
+.intro {
+  font-size: 25px;
+  color: #00BFFF;
+}
+
+.dropDown {
+  background-color: white;
+  color: black !important;
+  border-color: #BFBFBF !important;
+  height: 32px !important;
+  width: 74px !important;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.temparatureLogo {
+  height: 100px
+}
+
+.temparature {
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.temparatureLoc {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.hazeimg {
+  height: 200px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.cloud {
+  height: 60px;
+}
+
+.cloudDiv {
+  background-color: #00B8F0;
+  border-radius: 40px;
+  height: 74px;
+  width: 75px;
+  margin: auto;
+}
+
+.cloudDiv .color {
+  background-color: #00B8F0;
+  border-radius: 40px;
+  height: 74px;
+  width: 75px;
+  margin: auto;
+}
+
+.cloudDiv .blue {
+  background-color: blue;
+  border-radius: 40px;
+  height: 74px;
+  width: 75px;
+  margin: auto;
+}
+
+.cloudDiv .green {
+  background-color: green;
+  border-radius: 40px;
+  height: 74px;
+  width: 75px;
+  margin: auto;
+}
+
+.cloudDiv .pink {
+  background-color: rgb(205, 23, 132);
+  border-radius: 40px;
+  height: 74px;
+  width: 75px;
+  margin: auto;
+}
+
+.cloudDiv .red {
+  background-color: red;
+  border-radius: 40px;
+  height: 74px;
+  width: 75px;
+  margin: auto;
+}
+
+.tempcard {
+  border: 2px solid black;
+  height: 250px;
+  border-radius: 15px
+}
+
+.cardDiv {
+  margin-top: 20px;
+  margin-left: 60px;
+  margin-right: 20px;
+}
+
+.cloudName {
+  font-weight: 500;
+}
+
+.color {
+  color: #00B8F0;
+}
+
+.red {
+  color: red;
+}
+
+.pink {
+  color: rgb(205, 23, 132);
+}
+
+.green {
+  color: green;
+}
+
+.blue {
+  color: blue;
+}
+
+.searchButton {
+  cursor: pointer;
+}
+
+.optionsky {
+  color: #00B8F0;
+  background-color: #00B8F0;
+}
+
+.optionblue {
+  color: blue;
+  background-color: blue;
+}
+
+.optiongreen {
+  color: green;
+  background-color: green;
+}
+
+.optionpink {
+  color: rgb(205, 23, 132);
+  background-color: rgb(205, 23, 132);
+}
+
+.optionred {
+  color: red;
+  background-color: red;
+}
+
+.header,
+.inputGreeting,
+.themeColor {
+  display: flex;
+}
+
+.map{
+  height:30vh;
+  width: 30%;
+}
+
+@media only screen and (max-width: 600px) {
+  .inputGreeting {
+    display: block;
   }
-  to {
-    transform: rotate(360deg);
+
+  .inputDiv {
+    width: 100%;
   }
+
+  .themeColor {
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .map{
+    margin: auto;
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .temparatureLoc{
+    display: block;
+    text-align: center;
+  }
+  .temparatureImage{
+    justify-content: center;
+  }
+  .sunset{
+    margin-right: 1%;
+  }
+  .humidity{
+    margin-right: 11%;
+  }
+  .wind{
+    margin-left: 3%;
+  }
+  .pressure{
+    margin-right: 8%;
+  }
+  .direction{
+    margin-right: 4%;
+  }
+  .location{
+    margin-right: 13%;
+  }
+  .date{
+    margin-right: 8%;
+}
+}
+@media only screen and (max-width: 400px) {
+  .temparatureLoc{
+    display: block;
+    text-align: center;
+  }
+  .temparatureImage{
+    justify-content: center;
+  }
+  .sunset{
+    margin-right: 1%;
+  }
+  .humidity{
+    margin-right: 16%;
+  }
+  .wind{
+    margin-left: 3%;
+  }
+  .pressure{
+    margin-right: 11%;
+  }
+  .direction{
+    margin-right: 4%;
+  }
+  .location{
+    margin-right: 18%;
+  }
+  .date{
+    margin-right: 8%;
+}
+
 }
