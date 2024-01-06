@@ -23,6 +23,7 @@ import { MdOutlineSouth } from "react-icons/md";
 import { MdSouthWest } from "react-icons/md";
 import { MdWest } from "react-icons/md";
 import { MdNorthWest } from "react-icons/md";
+import Errorlogo from "./assests/wrong location-gif.gif"
 import {
     APIProvider,
     Map,
@@ -37,7 +38,9 @@ export const Weatherstatus = () => {
     const [theme, setTheme] = useState(false)
     const weatherDetail = useSelector((state) => state.weatherDetails)
     const deg = useSelector((state) => state.weatherDetails.wind.deg)
-    const cardDetails = useSelector((state) => state.cardDetails.list)
+    const cardDetails = useSelector((state) => state.cardDetails)
+    const [errorloc, setErrorloc] = useState()
+
     const [location, setLocation] = useState()
     const dispatch = useDispatch()
     const dayList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -64,21 +67,25 @@ export const Weatherstatus = () => {
             method: 'GET',
             url: `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=10a251fd2b2db596384a2cd822ae016d&units=metric`
         }).then((response) => {
+            setErrorloc(0)
             dispatch(searching(2))
             dispatch(weatherDetails(response.data))
         }).catch((error) => {
             console.log(error);
+            setErrorloc(1)
         })
 
         axios({
             method: 'GET',
             url: `https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=10a251fd2b2db596384a2cd822ae016d&units=metric`
         }).then((response) => {
+            setErrorloc(0)
             dispatch(searching(2))
-            dispatch(weatherCradDetails(response.data))
+            dispatch(weatherCradDetails(response.data.list))
 
         }).catch((error) => {
             console.log(error);
+            setErrorloc(1)
         })
     }
 
@@ -139,75 +146,83 @@ export const Weatherstatus = () => {
                     <div><Form.Control type="text" placeholder="Search for location" className="searchBox border-0" value={location} onChange={(e) => { setLocation(e.target.value) }} onKeyDown={(e) => { e.key === "Enter" && searchLocation(location) }} /></div>
                     <div onClick={() => { searchLocation(location) }} className="searchButton"><FaSearch /></div>
                 </div>
-            </div>
-            <div className="temparatureLoc align-items-center" style={{ justifyContent: "space-evenly" }}>
-                <div>
-                    <div className="mb-3 location"><span><IoLocationOutline className={`fs-2 ${color} color`} /></span><span className="fs-4 ms-2">{weatherDetail.name} / {weatherDetail.sys.country}</span></div>
-                    <div className="mb-3 date"><span><IoCalendarNumberOutline className={`fs-4 ${color} color`} /></span><span className="fs-6 ms-2">{dayList[new Date().getDay()]}, {new Date().getDate()} {monthList[new Date().getMonth()]} {new Date().getFullYear()}</span></div>
-                    <div className="d-flex temparatureImage">
+            </div>{
+                errorloc !== 1 ? <div>
+                    <div className="temparatureLoc align-items-center" style={{ justifyContent: "space-evenly" }}>
                         <div>
-                            <p className="temparature">{weatherDetail.main.temp}</p>
-                            <p>Feels like: {weatherDetail.main.feels_like}</p>
+                            <div className="mb-3 location"><span><IoLocationOutline className={`fs-2 ${color} color`} /></span><span className="fs-4 ms-2">{weatherDetail.name} / {weatherDetail.sys.country}</span></div>
+                            <div className="mb-3 date"><span><IoCalendarNumberOutline className={`fs-4 ${color} color`} /></span><span className="fs-6 ms-2">{dayList[new Date().getDay()]}, {new Date().getDate()} {monthList[new Date().getMonth()]} {new Date().getFullYear()}</span></div>
+                            <div className="d-flex temparatureImage">
+                                <div>
+                                    <p className="temparature">{weatherDetail.main.temp}</p>
+                                    <p>Feels like: {weatherDetail.main.feels_like}</p>
+                                </div>
+                                <div>
+                                    <img src={Temperature} alt="temparture" className="temparatureLogo" />
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            <img src={Temperature} alt="temparture" className="temparatureLogo" />
+                            <div><img src={Haze} alt="hazeimg" className="hazeimg" /></div>
+                            <div className={`text-center fs-3 fw-bold ${color} color`}>{weatherDetail.weather[0].main}</div>
+                        </div>
+
+                        <div className="map">
+                            <APIProvider apiKey={mapKey}>
+                                <Map zoom={9} center={position} mapId={mapId}>
+                                    <AdvancedMarker position={position} onClick={() => setOpen(true)}>
+                                        <Pin
+                                            background={"grey"}
+                                            borderColor={"green"}
+                                            glyphColor={"purple"}
+                                        />
+                                    </AdvancedMarker>
+
+                                    {open && (
+                                        <InfoWindow position={position} onCloseClick={() => setOpen(false)}>
+                                            <p>You have searched {weatherDetail.name}!</p>
+                                        </InfoWindow>
+                                    )}
+                                </Map>
+                            </APIProvider>
+                        </div>
+
+                        <div className="allData">
+                            <div className="fs-4 sunrise"><span><FiSunrise className={`color ${color}`} /></span><span className="ms-3">Sunrise: {sunrise} AM</span></div>
+                            <div className="fs-4 sunset"><span><FiSunset className={`color ${color}`} /></span><span className="ms-3">Sunset: {sunset} PM</span></div>
+                            <div className="fs-4 humidity"><span><WiHumidity className={`color ${color}`} /></span><span className="ms-3">Humidity: {weatherDetail.main.humidity}%</span></div>
+                            <div className="fs-4 wind"><span><GiWindsock className={`color ${color}`} /></span><span className="ms-3">Wind Speed: {weatherDetail.wind.speed}k/hr</span></div>
+                            <div className="fs-4 pressure"><span><BiUpArrowAlt className={`color ${color}`} /></span><span className="ms-3">Pressure: {weatherDetail.main.pressure}mb</span></div>
+                            <div className="fs-4 direction"><span><GiMultiDirections className={`color ${color}`} /></span><span className="ms-3">Directions: {directions[index]}</span></div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <div><img src={Haze} alt="hazeimg" className="hazeimg" /></div>
-                    <div className={`text-center fs-3 fw-bold ${color} color`}>{weatherDetail.weather[0].main}</div>
-                </div>
-
-                <div className="map">
-                    <APIProvider apiKey={mapKey}>
-                        <Map zoom={9} center={position} mapId={mapId}>
-                            <AdvancedMarker position={position} onClick={() => setOpen(true)}>
-                                <Pin
-                                    background={"grey"}
-                                    borderColor={"green"}
-                                    glyphColor={"purple"}
-                                />
-                            </AdvancedMarker>
-
-                            {open && (
-                                <InfoWindow position={position} onCloseClick={() => setOpen(false)}>
-                                    <p>You have searched {weatherDetail.name} !</p>
-                                </InfoWindow>
-                            )}
-                        </Map>
-                    </APIProvider>
-                </div>
-
-                <div className="allData">
-                    <div className="fs-4 sunrise"><span><FiSunrise className={`color ${color}`} /></span><span className="ms-3">Sunrise: {sunrise} AM</span></div>
-                    <div className="fs-4 sunset"><span><FiSunset className={`color ${color}`} /></span><span className="ms-3">Sunset: {sunset} PM</span></div>
-                    <div className="fs-4 humidity"><span><WiHumidity className={`color ${color}`} /></span><span className="ms-3">Humidity: {weatherDetail.main.humidity}%</span></div>
-                    <div className="fs-4 wind"><span><GiWindsock className={`color ${color}`} /></span><span className="ms-3">Wind Speed: {weatherDetail.wind.speed}k/hr</span></div>
-                    <div className="fs-4 pressure"><span><BiUpArrowAlt className={`color ${color}`} /></span><span className="ms-3">Pressure: {weatherDetail.main.pressure}mb</span></div>
-                    <div className="fs-4 direction"><span><GiMultiDirections className={`color ${color}`} /></span><span className="ms-3">Directions: {directions[index]}</span></div>
-                </div>
-            </div>
-            <div className="text-center mt-4 fs-2">Next 24 hours Forecast</div>
-            <div className="cardDiv row row-cols-8">
-                {
-                    cardDetails?.map((item, index) => {
-                        if (index < 8) {
-                            return (
-                                <div className="p-2 outerTempDiv col">
-                                    <div className="tempcard text-center p-2" key={index}>
-                                        <div className={`cloudDiv text-center ${color}`}><img src={Cloud} alt="cloud" className={`cloud ${color}`} /></div>
-                                        <div className="cloudName mb-3">{item.weather[0].description.toUpperCase()}</div>
-                                        <div className={`mb-2 fs-5 ${color} color`}>{item.main.temp}&deg;C</div>
-                                        <div>{item.dt_txt.split(" ")[0].replaceAll("-", "/")},</div>
-                                        <div>{item.dt_txt.split(" ")[1]}</div>
-                                    </div>
-                                </div>
-                            )
+                    <div className="text-center mt-4 fs-2">Next 24 hours Forecast</div>
+                    <div className="cardDiv row row-cols-8">
+                        {
+                            cardDetails?.map((item, index) => {
+                                if (index < 8) {
+                                    return (
+                                        <div className="p-2 outerTempDiv col">
+                                            <div className="tempcard text-center p-2" key={index}>
+                                                <div className={`cloudDiv text-center ${color}`}><img src={Cloud} alt="cloud" className={`cloud ${color}`} /></div>
+                                                <div className="cloudName mb-3">{item.weather[0].description.toUpperCase()}</div>
+                                                <div className={`mb-2 fs-5 ${color} color`}>{item.main.temp}&deg;C</div>
+                                                <div>{item.dt_txt.split(" ")[0].replaceAll("-", "/")},</div>
+                                                <div>{item.dt_txt.split(" ")[1]}</div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            })
                         }
-                    })
-                }
-            </div>
+                    </div>
+                </div> : <div className="errorDiv">
+                    <img src={Errorlogo} alt="404 error" />
+                    <p className="errorMsg">Kindly check your entered location..!</p>
+                </div>
+            }
+
+
         </div>
     )
 }
