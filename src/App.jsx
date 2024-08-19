@@ -1,19 +1,23 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import "./App.css";
 import { Home } from "./home";
 import './index.css';
-import { Weatherstatus } from "./weather_status";
 import { useSelector } from "react-redux";
 
-const App=()=>{
-    
-    const log=useSelector((state)=>state.log)
+const Weatherstatus = lazy(() => import('./weather_status.jsx'));
+
+const App = () => {
+
+    const log = useSelector((state) => state.log)
 
     return (
         <>
-        {
-            log===1||log===2?<Weatherstatus/>:<Home/>
-        }
+          
+            {
+                log === 1 || log === 2 ? <Suspense fallback={  <div class="loader">
+                <div class="justify-content-center jimu-primary-loading"></div>
+            </div>}><Weatherstatus /> </Suspense> : <Home />
+            }
         </>
     )
 }

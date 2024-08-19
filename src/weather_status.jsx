@@ -32,7 +32,7 @@ import {
     InfoWindow,
 } from "@vis.gl/react-google-maps";
 
-export const Weatherstatus = () => {
+const Weatherstatus = () => {
 
     const [time, setTime] = useState(new Date().toLocaleTimeString())
     const [theme, setTheme] = useState(false)
@@ -199,6 +199,7 @@ export const Weatherstatus = () => {
                     <div className="text-center mt-4 fs-2">Next 24 hours Forecast</div>
                     <div className="cardDiv row row-cols-8">
                         {
+                            // eslint-disable-next-line array-callback-return
                             cardDetails?.map((item, index) => {
                                 if (index < 8) {
                                     return (
@@ -226,3 +227,4 @@ export const Weatherstatus = () => {
         </div>
     )
 }
+export default Weatherstatus

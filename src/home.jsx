@@ -5,8 +5,8 @@ import { FaSearch } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import Instruction from "./assests/introImage.png";
 import Weather from "./assests/weather.png";
+import Errorlogo from "./assests/wrong location-gif.gif";
 import { searching, weatherCradDetails, weatherDetails } from "./service/action";
-import Errorlogo from "./assests/wrong location-gif.gif"
 
 export const Home = () => {
 
